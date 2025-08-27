@@ -52,6 +52,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				solana: {
+					purple: 'hsl(var(--solana-purple))',
+					green: 'hsl(var(--solana-green))'
+				},
+				market: {
+					bull: 'hsl(var(--market-bull))',
+					bear: 'hsl(var(--market-bear))',
+					neutral: 'hsl(var(--market-neutral))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -84,11 +93,36 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'glow-pulse': {
+					'0%, 100%': { 
+						boxShadow: '0 0 20px hsl(261 100% 65% / 0.3)' 
+					},
+					'50%': { 
+						boxShadow: '0 0 40px hsl(261 100% 65% / 0.6)' 
+					}
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'market-pulse': {
+					'0%, 100%': { 
+						backgroundColor: 'hsl(var(--card))',
+						borderColor: 'hsl(var(--border))'
+					},
+					'50%': { 
+						backgroundColor: 'hsl(var(--primary) / 0.1)',
+						borderColor: 'hsl(var(--primary) / 0.3)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+				'float': 'float 3s ease-in-out infinite',
+				'market-pulse': 'market-pulse 2s ease-in-out infinite'
 			}
 		}
 	},
