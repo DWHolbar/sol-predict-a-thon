@@ -3,10 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { BetDialog } from "@/components/ui/bet-dialog";
 import { TrendingUp, TrendingDown, Clock, Users } from "lucide-react";
+import { PublicKey } from "@solana/web3.js";
 import { cn } from "@/lib/utils";
 
 interface MarketCardProps {
+  id?: PublicKey;
   title: string;
   description: string;
   category: string;
@@ -22,6 +25,7 @@ interface MarketCardProps {
 
 const MarketCard = React.forwardRef<HTMLDivElement, MarketCardProps>(
   ({
+    id,
     title,
     description,
     category,
@@ -101,12 +105,39 @@ const MarketCard = React.forwardRef<HTMLDivElement, MarketCardProps>(
           </div>
 
           <div className="flex gap-2 pt-2">
-            <Button variant="outline" size="sm" className="flex-1 border-market-bull/20 hover:bg-market-bull/10">
-              Buy YES
-            </Button>
-            <Button variant="outline" size="sm" className="flex-1 border-market-bear/20 hover:bg-market-bear/10">
-              Buy NO
-            </Button>
+            {id ? (
+              <>
+                <BetDialog
+                  marketPDA={id}
+                  marketTitle={title}
+                  isYesBet={true}
+                  currentPrice={yesPrice}
+                >
+                  <Button variant="outline" size="sm" className="flex-1 border-market-bull/20 hover:bg-market-bull/10">
+                    Buy YES
+                  </Button>
+                </BetDialog>
+                <BetDialog
+                  marketPDA={id}
+                  marketTitle={title}
+                  isYesBet={false}
+                  currentPrice={noPrice}
+                >
+                  <Button variant="outline" size="sm" className="flex-1 border-market-bear/20 hover:bg-market-bear/10">
+                    Buy NO
+                  </Button>
+                </BetDialog>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" size="sm" className="flex-1 border-market-bull/20 hover:bg-market-bull/10">
+                  Buy YES
+                </Button>
+                <Button variant="outline" size="sm" className="flex-1 border-market-bear/20 hover:bg-market-bear/10">
+                  Buy NO
+                </Button>
+              </>
+            )}
           </div>
         </CardContent>
       </Card>

@@ -1,15 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Wallet, Menu, X, BarChart3, Plus, User, TrendingUp } from "lucide-react";
+import { WalletButton } from "@/components/ui/wallet-button";
+import { CreateMarketDialog } from "@/components/ui/create-market-dialog";
+import { Menu, X, BarChart3, Plus, User, TrendingUp } from "lucide-react";
 import { useState } from "react";
+import { useSolana } from "@/hooks/useSolana";
+import { formatSOL } from "@/lib/solana";
 import solanaIcon from "@/assets/solana-icon.png";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const { connected, publicKey } = useSolana();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const connectWallet = () => setIsConnected(!isConnected);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-border/50">
@@ -42,24 +45,13 @@ export function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="sm">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Market
-            </Button>
+            <CreateMarketDialog />
+            <WalletButton />
             
-            {!isConnected ? (
-              <Button onClick={connectWallet} className="glow-primary">
-                <Wallet className="h-4 w-4 mr-2" />
-                Connect Wallet
-              </Button>
-            ) : (
+            {connected && publicKey && (
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  <User className="h-4 w-4 mr-2" />
-                  8Ab...x9Z
-                </Button>
                 <div className="text-sm text-muted-foreground">
-                  1,247.50 SOL
+                  {publicKey.toString().slice(0, 4)}...{publicKey.toString().slice(-4)}
                 </div>
               </div>
             )}
@@ -98,25 +90,12 @@ export function Navbar() {
             </div>
             
             <div className="pt-4 border-t border-border/50 space-y-3">
-              <Button variant="ghost" size="sm" className="w-full justify-start">
-                <Plus className="h-4 w-4 mr-2" />
-                Create Market
-              </Button>
+              <CreateMarketDialog />
+              <WalletButton className="!w-full !text-sm" />
               
-              {!isConnected ? (
-                <Button onClick={connectWallet} className="w-full">
-                  <Wallet className="h-4 w-4 mr-2" />
-                  Connect Wallet
-                </Button>
-              ) : (
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full">
-                    <User className="h-4 w-4 mr-2" />
-                    8Ab...x9Z
-                  </Button>
-                  <div className="text-center text-sm text-muted-foreground">
-                    Balance: 1,247.50 SOL
-                  </div>
+              {connected && publicKey && (
+                <div className="text-center text-sm text-muted-foreground">
+                  {publicKey.toString().slice(0, 8)}...{publicKey.toString().slice(-8)}
                 </div>
               )}
             </div>
